@@ -1,8 +1,10 @@
+import "dotenv/config";
 import app from "./app";
 import { connectDb } from "./config/db.config";
+import ENV_CONFIG from "./config/Env.config";
 
-const Port = 5000;
-const DB_URI = "mongodb://localhost:27017/MovieTicketBooking";
+const Port = ENV_CONFIG.port;
+const DB_URI = ENV_CONFIG.DB_URI;
 connectDb(DB_URI);
 
 app.listen(Port, () => {
