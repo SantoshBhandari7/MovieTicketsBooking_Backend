@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Type } from "../@types/enum.types";
 
 const screenSchema = new mongoose.Schema(
   {
@@ -20,12 +21,20 @@ const screenSchema = new mongoose.Schema(
           row: {
             type: String,
           },
-          type:{
-            enum:
-          }
+          type: {
+            enum: Object.values(Type),
+            default: "REGULAR",
+          },
         },
       ],
+      isActive: {
+        type: Boolean,
+        required: true,
+      },
     },
   },
   { timestamps: true },
 );
+
+const Screen = mongoose.model("screen", screenSchema);
+export default Screen;
