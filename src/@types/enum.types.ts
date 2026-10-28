@@ -11,7 +11,7 @@ export enum Type {
 }
 export enum Status {
   SCHEDULED = "SCHEDULED",
-  CANCEL = "CANCEL",
+  CANCELED = "CANCELED",
   COMPLETED = "COMPLETED",
 }
 
@@ -19,4 +19,11 @@ export enum SeatStatus {
   AVAILABLE = "AVAILABLE",
   HELD = "HELD",
   BOOKED = "BOOKED",
+}
+
+export enum BookingStatus {
+  PENDING = "PENDING",
+  CANCELED = "CANCEL",
+  COMPLETED = "COMPLETED",
+  EXPIRED = "EXPIRED",
 }
