@@ -14,3 +14,9 @@ export enum Status {
   CANCEL = "CANCEL",
   COMPLETED = "COMPLETED",
 }
+
+export enum SeatStatus {
+  AVAILABLE = "AVAILABLE",
+  HELD = "HELD",
+  BOOKED = "BOOKED",
+}
