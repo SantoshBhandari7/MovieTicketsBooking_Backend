@@ -14,6 +14,10 @@ const showSchema = new mongoose.Schema(
       ref: "screen",
       required: true,
     },
+    startTime: {
+      type: Date,
+      required: true,
+    },
     endTime: {
       type: Date,
       required: true,
@@ -32,3 +36,6 @@ const showSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+const Show = mongoose.model("show", showSchema);
+export default Show;
