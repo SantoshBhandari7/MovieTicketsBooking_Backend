@@ -27,3 +27,10 @@ export enum BookingStatus {
   COMPLETED = "COMPLETED",
   EXPIRED = "EXPIRED",
 }
+
+export enum PaymentStatus {
+  UNPAID = "UNPAID",
+  PAID = "PAID",
+  FAILED = "FAILED",
+  REFUND = "REFUND",
+}

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { BookingStatus, PaymentStatus } from "../@types/enum.types";
 
 const bookingSchema = new mongoose.Schema(
   {
@@ -29,8 +30,21 @@ const bookingSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: Object.values(),
+      enum: Object.values(BookingStatus),
+      default: "AVAILABLE",
+    },
+    paymentStatus: {
+      type: String,
+      enum: Object.values(PaymentStatus),
+      default: "UNPAID",
+    },
+    expireAt: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true },
 );
+
+const Booking = mongoose.model("booking", bookingSchema);
+export default Booking;
