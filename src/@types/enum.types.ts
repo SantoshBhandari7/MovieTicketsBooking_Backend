@@ -9,7 +9,6 @@ export enum Type {
   PREMIUM = "PREMIUM",
   VIP = "VIP",
 }
-
 export enum Status {
   SCHEDULED = "SCHEDULED",
   CANCEL = "CANCEL",
