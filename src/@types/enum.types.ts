@@ -34,3 +34,9 @@ export enum PaymentStatus {
   FAILED = "FAILED",
   REFUND = "REFUND",
 }
+
+export enum Provider {
+  ESEWA = "ESEWA",
+  KHALTI = "KHALTI",
+  OTHERS = "OTHERS",
+}
