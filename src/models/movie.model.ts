@@ -22,10 +22,10 @@ const movieSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    coverImage: {
-      type: FileList,
-      required: true,
-    },
+    // coverImage: {
+    //   type: FileList,
+    //   required: true,
+    // },
   },
   { timestamps: true },
 );

@@ -19,7 +19,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/v1/auth", AuthRoutes);
-app.use("/api/v1", MovieRoutes);
+app.use("/api/v1/movies", MovieRoutes);
 
 app.use((req, res, next) => {
   const error: any = Error(`Cannot on ${req.method} on ${req.path}`);

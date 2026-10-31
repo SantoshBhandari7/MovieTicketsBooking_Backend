@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../models/user.model";
 import { ApiError } from "../utils/apiError.utils";
-import { compare, hash } from "../utils/bycript.utils";
+import { compare, hash } from "../utils/bcrypt.util";
 
 export const register = async (
   req: Request,
