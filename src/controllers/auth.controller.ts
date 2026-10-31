@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../models/user.model";
 import { ApiError } from "../utils/apiError.utils";
+import { compare, hash } from "../utils/bycript.utils";
 
 export const register = async (
   req: Request,
@@ -17,6 +18,9 @@ export const register = async (
     }
 
     const newUser = new User({ full_name, email, phone });
+
+    const hashPass = await hash(password);
+    newUser.password = hashPass;
 
     await newUser.save();
 
@@ -52,6 +56,13 @@ export const Login = async (
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
+      throw new ApiError("Invalid Credential", 404);
+      return;
+    }
+
+    const isPasswordMatch = await compare(password, user.password);
+
+    if (!isPasswordMatch) {
       throw new ApiError("Invalid Credential", 404);
       return;
     }
