@@ -69,7 +69,7 @@ export const createShow = async (
       !ticketPrice ||
       !status
     ) {
-      throw new ApiError("all filed are required", 404);
+      throw new ApiError("all filed are required", 409);
     }
 
     const show = new Show({ startTime, endTime, ticketPrice, status });
