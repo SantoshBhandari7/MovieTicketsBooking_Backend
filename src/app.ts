@@ -3,6 +3,8 @@ import { errorHandler } from "./middlewares/errorHandler.middleware";
 import AuthRoutes from "./routes/auth.route";
 import MovieRoutes from "./routes/movie.route";
 import CinemaRoutes from "./routes/cinema.route";
+import ScreenRoutes from "./routes/screen.route";
+import ShowRoutes from "./routes/show.routes";
 
 const app = express();
 app.use(express.json());
@@ -19,6 +21,8 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/v1/auth", AuthRoutes);
 app.use("/api/v1/movies", MovieRoutes);
 app.use("/api/v1/cinemas", CinemaRoutes);
+app.use("/api/v1/screens", ScreenRoutes);
+app.use("/api/v1/shows", ShowRoutes);
 
 app.use((req, res, next) => {
   const error: any = Error(`Cannot on ${req.method} on ${req.path}`);
