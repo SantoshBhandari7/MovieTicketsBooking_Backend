@@ -1,10 +1,8 @@
 import express, { NextFunction, Request, Response } from "express";
-import { error } from "node:console";
-import { register } from "./controllers/auth.controller";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
-import { nextTick } from "node:process";
 import AuthRoutes from "./routes/auth.route";
 import MovieRoutes from "./routes/movie.route";
+import CinemaRoutes from "./routes/cinema.route";
 
 const app = express();
 app.use(express.json());
@@ -20,6 +18,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/v1/auth", AuthRoutes);
 app.use("/api/v1/movies", MovieRoutes);
+app.use("/api/v1/cinemas", CinemaRoutes);
 
 app.use((req, res, next) => {
   const error: any = Error(`Cannot on ${req.method} on ${req.path}`);
