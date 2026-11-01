@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Screen from "../models/screen.model";
 import { ApiError } from "../utils/apiError.utils";
+import Cinema from "../models/cinema.model";
 
 export const getAllScreen = async (
   req: Request,
@@ -29,7 +30,7 @@ export const getScreenById = async (
 ) => {
   try {
     const { id } = req.params;
-    const screen = await Screen.findById(id);
+    const screen = await Screen.findById(id).populate("cinema");
     if (!screen) {
       throw new ApiError("Screen not found", 404);
     }
@@ -54,25 +55,33 @@ export const createScreen = async (
   try {
     const { name, cinema, totalSeats } = req.body;
     if (!name || !cinema || !totalSeats) {
-      throw new ApiError("All field are required", 404);
+      throw new ApiError("All field are required", 400);
     }
 
-    const screen = await Screen.findOne({ name });
+    const screen = await Screen.findOne({ name, cinema });
     if (screen) {
-      throw new ApiError("Screen already exists", 404);
+      throw new ApiError("Screen already exists", 409);
     }
 
-    const newScreen = new Screen({ name, cinema, totalSeats });
+    const newScreen = new Screen({ name, totalSeats });
+
+    const screenCinema = await Cinema.findOne({ _id: cinema });
+    if (!screenCinema) {
+      throw new ApiError(`screenCinema:${screenCinema} not found`, 404);
+    }
+    newScreen.cinema = screenCinema._id;
+
     await newScreen.save();
 
     res.status(201).json({
       message: "screen create successfully",
-      data: screen,
+      data: newScreen,
       success: true,
       status: "success",
     });
   } catch (error) {
     console.log(error);
+    next(error);
   }
 };
 
@@ -85,17 +94,20 @@ export const updateScreen = async (
     const { id } = req.params;
     const { name, cinema, totalSeats } = req.body;
 
-    const screen = await Screen.findByIdAndUpdate(id);
+    const screen = await Screen.findById(id);
     if (!screen) {
       throw new ApiError("screen not found", 404);
     }
 
-    const newScreen = new Screen({ name, cinema, totalSeats });
-    await newScreen.save();
+    if (name) screen.name = name;
+    if (cinema) screen.cinema = cinema;
+    if (totalSeats) screen.totalSeats = totalSeats;
+
+    await screen.save();
 
     res.status(201).json({
       message: "screen updated successfully",
-      data: newScreen,
+      data: screen,
       status: "success",
       success: true,
     });
