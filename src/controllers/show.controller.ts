@@ -12,10 +12,6 @@ export const getAllShow = async (
   try {
     const shows = await Show.find();
 
-    if (!shows) {
-      throw new ApiError("No any show exists", 404);
-    }
-
     res.status(200).json({
       message: "all show fetched",
       data: shows,
