@@ -145,7 +145,7 @@ export const updateSeats = async (
   }
 };
 
-export const deleteShow = async (
+export const deleteSeat = async (
   req: Request,
   res: Response,
   next: NextFunction,
