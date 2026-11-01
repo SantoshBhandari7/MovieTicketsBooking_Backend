@@ -10,10 +10,6 @@ export const getAllCinema = async (
   try {
     const cinemas = await Cinema.find();
 
-    if (!cinemas) {
-      throw new ApiError("No Cinema is exists here", 404);
-    }
-
     res.status(200).json({
       message: "Cinema is fetched successfully",
       data: cinemas,
@@ -59,9 +55,13 @@ export const createCinema = async (
   try {
     const { name, location, phone, isActive } = req.body;
 
+    if (!name || !location || !phone || !isActive) {
+      throw new ApiError("all fields are required", 400);
+    }
+
     const oldCinema = await Cinema.findOne({ name, location });
     if (oldCinema) {
-      throw new ApiError("This cinema is already exists", 404);
+      throw new ApiError("This cinema is already exists", 409);
     }
 
     const cinema = new Cinema({ name, location, phone, isActive });
