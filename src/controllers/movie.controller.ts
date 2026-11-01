@@ -10,10 +10,6 @@ export const getAllMovies = async (
   try {
     const movies = await Movie.find();
 
-    if (!movies) {
-      throw new ApiError("movies are not exists", 404);
-    }
-
     res.status(200).json({
       message: "Movies fetched successfully",
       data: movies,
@@ -59,9 +55,12 @@ export const createMovie = async (
   try {
     const { title, description, duration, language, releaseDate } = req.body;
 
+    if (!title || !description || !duration || !language || !releaseDate) {
+      throw new ApiError("all fields are required", 400);
+    }
     const oldMovie = await Movie.findOne({ title });
     if (oldMovie) {
-      throw new ApiError("Movie with this name is already exists", 404);
+      throw new ApiError("Movie with this name is already exists", 409);
     }
 
     const movie = new Movie({
@@ -95,22 +94,22 @@ export const updateMovie = async (
     const { id } = req.params;
     const { title, description, duration, language, releaseDate } = req.body;
 
-    const movie = await Movie.findByIdAndUpdate(id);
+    const movie = await Movie.findById(id);
     if (!movie) {
       throw new ApiError("Movie not found with given id", 404);
     }
 
-    const newMovie = new Movie({
-      title,
-      description,
-      duration,
-      language,
-      releaseDate,
-    });
+    if (title) movie.title = title;
+    if (description) movie.description = description;
+    if (duration) movie.duration = duration;
+    if (language) movie.language = language;
+    if (releaseDate) movie.releaseDate = releaseDate;
 
-    res.status(201).json({
+    await movie.save();
+
+    res.status(200).json({
       message: "movie updated successfully",
-      data: newMovie,
+      data: movie,
       success: true,
       status: "success",
     });
