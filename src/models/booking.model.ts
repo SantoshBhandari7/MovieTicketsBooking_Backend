@@ -12,11 +12,13 @@ const bookingSchema = new mongoose.Schema(
       ref: "user",
       required: true,
     },
-    seats: {
-      type: mongoose.Types.ObjectId,
-      ref: "showseats",
-      required: true,
-    },
+    seats: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "showseats",
+        required: true,
+      },
+    ],
 
     show: {
       type: mongoose.Types.ObjectId,
@@ -31,7 +33,7 @@ const bookingSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: Object.values(BookingStatus),
-      default: "AVAILABLE",
+      default: "PENDING",
     },
     paymentStatus: {
       type: String,

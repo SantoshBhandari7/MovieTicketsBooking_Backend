@@ -22,6 +22,7 @@ const screenSchema = new mongoose.Schema(
             type: String,
           },
           type: {
+            type: String,
             enum: Object.values(Type),
             default: "REGULAR",
           },
