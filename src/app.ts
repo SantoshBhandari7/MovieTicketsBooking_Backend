@@ -1,12 +1,12 @@
 import express, { NextFunction, Request, Response } from "express";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
-import AuthRoutes from "./routes/auth.route";
-import MovieRoutes from "./routes/movie.route";
-import CinemaRoutes from "./routes/cinema.route";
-import ScreenRoutes from "./routes/screen.route";
+import AuthRoutes from "./routes/auth.routes";
+import MovieRoutes from "./routes/movie.routes";
+import CinemaRoutes from "./routes/cinema.routes";
+import ScreenRoutes from "./routes/screen.routes";
 import ShowRoutes from "./routes/show.routes";
-import ShowSeatsRoutes from "./routes/showSeat.route";
-import BookingRoutes from "./routes/booking.route";
+import ShowSeatsRoutes from "./routes/showSeat.routes";
+import BookingRoutes from "./routes/booking.routes";
 import PaymentRoutes from "./routes/payment.routes";
 
 const app = express();
