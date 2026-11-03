@@ -7,6 +7,7 @@ import ScreenRoutes from "./routes/screen.route";
 import ShowRoutes from "./routes/show.routes";
 import ShowSeatsRoutes from "./routes/showSeat.route";
 import BookingRoutes from "./routes/booking.route";
+import PaymentRoutes from "./routes/payment.routes";
 
 const app = express();
 app.use(express.json());
@@ -27,6 +28,7 @@ app.use("/api/v1/screens", ScreenRoutes);
 app.use("/api/v1/shows", ShowRoutes);
 app.use("/api/v1/showSeats", ShowSeatsRoutes);
 app.use("/api/v1/bookings", BookingRoutes);
+app.use("/api/v1/payments", PaymentRoutes);
 
 app.use((req, res, next) => {
   const error: any = Error(`Cannot on ${req.method} on ${req.path}`);
