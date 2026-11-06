@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import Movie from "../models/movie.model";
 import { ApiError } from "../utils/apiError.utils";
+import { upload } from "../utils/cloudinary.utils";
 
+const folder = "/posters";
 export const getAllMovies = async (
   req: Request,
   res: Response,
@@ -54,6 +56,7 @@ export const createMovie = async (
 ) => {
   try {
     const { title, description, duration, language, releaseDate } = req.body;
+    const poster = req.file;
 
     if (!title || !description || !duration || !language || !releaseDate) {
       throw new ApiError("all fields are required", 400);
@@ -70,6 +73,14 @@ export const createMovie = async (
       language,
       releaseDate,
     });
+
+    if (poster) {
+      const { path, public_id } = await upload(poster, folder);
+      movie.poster = {
+        path,
+        public_id,
+      };
+    }
 
     await movie.save();
 

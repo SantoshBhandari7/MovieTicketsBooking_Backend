@@ -22,10 +22,19 @@ const movieSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    // coverImage: {
-    //   type: FileList,
-    //   required: true,
-    // },
+    poster: {
+      type: {
+        path: {
+          type: String,
+          required: [true, "path is required"],
+        },
+        public_id: {
+          type: String,
+          required: [true, "public_id is required"],
+        },
+      },
+      default: null,
+    },
   },
   { timestamps: true },
 );
