@@ -2,6 +2,10 @@ import { NextFunction, Request, Response } from "express";
 import User from "../models/user.model";
 import { ApiError } from "../utils/apiError.utils";
 import { compare, hash } from "../utils/bcrypt.util";
+import { upload } from "../utils/cloudinary.utils";
+import ENV_CONFIG from "../config/Env.config";
+
+const uploadFolders = "/profiles";
 
 export const register = async (
   req: Request,
@@ -10,6 +14,7 @@ export const register = async (
 ) => {
   try {
     const { full_name, email, password, phone } = req.body;
+    const profile_image = req.file;
 
     const user = await User.findOne(email, full_name);
     if (user) {
@@ -21,6 +26,14 @@ export const register = async (
 
     const hashPass = await hash(password);
     newUser.password = hashPass;
+
+    if (profile_image) {
+      const { path, public_id } = await upload(profile_image, uploadFolders);
+      newUser.profile_image = {
+        path,
+        public_id,
+      };
+    }
 
     await newUser.save();
 
@@ -74,6 +87,65 @@ export const Login = async (
       success: true,
     });
   } catch (error: any) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const getProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findOne({ id });
+
+    if (!user) {
+      throw new ApiError("user not found", 404);
+    }
+
+    res.status(200).json({
+      message: "user profiles fetched",
+      data: user,
+      success: true,
+      status: "success",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+const Logout = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    res.clearCookie("access_token", {
+      httpOnly: ENV_CONFIG.node_env === "development" ? false : true,
+      maxAge: Date.now(),
+      sameSite: ENV_CONFIG.node_env === "development" ? "lax" : "none",
+      secure: ENV_CONFIG.node_env === "development" ? false : true,
+    });
+    res.status(200).json({
+      message: "logout successfully",
+      data: null,
+      success: true,
+      status: "success",
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+export const forgetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { email } = req.body;
+  } catch (error) {
     console.log(error);
     next(error);
   }

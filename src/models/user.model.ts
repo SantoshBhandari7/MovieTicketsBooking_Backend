@@ -26,6 +26,19 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: String,
     },
+    profile_image: {
+      type: {
+        path: {
+          type: String,
+          required: [true, "path is required"],
+        },
+        public_id: {
+          type: String,
+          required: [true, "path is required"],
+        },
+      },
+      default: null,
+    },
   },
   { timestamps: true },
 );
