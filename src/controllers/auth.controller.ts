@@ -138,15 +138,15 @@ const Logout = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export const forgetPassword = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const { email } = req.body;
-  } catch (error) {
-    console.log(error);
-    next(error);
-  }
-};
+// export const forgetPassword = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction,
+// ) => {
+//   try {
+//     const { email } = req.body;
+//   } catch (error) {
+//     console.log(error);
+//     next(error);
+//   }
+// };

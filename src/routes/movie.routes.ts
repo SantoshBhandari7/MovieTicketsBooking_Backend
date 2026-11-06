@@ -6,14 +6,16 @@ import {
   getMovieById,
   updateMovie,
 } from "../controllers/movie.controller";
+import { uploader } from "../middlewares/multer.middleware";
 
 const router = express.Router();
+const upload = uploader();
 
 router.get("/", getAllMovies);
 
 router.get("/:id", getMovieById);
 
-router.post("/", createMovie);
+router.post("/", upload.single("poster"), createMovie);
 
 router.put("/:id", updateMovie);
 
