@@ -1,12 +1,9 @@
-interface RegisterEmailProps {
+interface EmailProps {
   full_name: string;
   email: string;
 }
 
-export const registerEmailTemplate = ({
-  full_name,
-  email,
-}: RegisterEmailProps) => {
+export const registerEmailTemplate = ({ full_name, email }: EmailProps) => {
   return `
   <!DOCTYPE html>
   <html>
@@ -72,7 +69,7 @@ export const registerEmailTemplate = ({
           line-height: 1.7;
         ">
           We are excited to have you with us.
-          Now you can explore movies, check showtimes,
+          Now you can explore movies, check show times,
           choose your favorite seats, and book your
           movie tickets easily.
         </p>
@@ -149,12 +146,7 @@ export const registerEmailTemplate = ({
   `;
 };
 
-interface LoginEmailProps {
-  full_name: string;
-  email: string;
-}
-
-export const loginEmailTemplate = ({ full_name, email }: LoginEmailProps) => {
+export const loginEmailTemplate = ({ full_name, email }: EmailProps) => {
   return `
   <!DOCTYPE html>
   <html>
