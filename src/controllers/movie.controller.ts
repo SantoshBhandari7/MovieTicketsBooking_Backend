@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import Movie from "../models/movie.model";
 import { ApiError } from "../utils/apiError.utils";
-import { upload } from "../utils/cloudinary.utils";
+import { removeFile, upload } from "../utils/cloudinary.utils";
 
 const folder = "/posters";
 export const getAllMovies = async (
@@ -104,8 +104,9 @@ export const updateMovie = async (
   try {
     const { id } = req.params;
     const { title, description, duration, language, releaseDate } = req.body;
+    const file = req.file;
 
-    const movie = await Movie.findById(id);
+    const movie = await Movie.findOne({ _id: id });
     if (!movie) {
       throw new ApiError("Movie not found with given id", 404);
     }
@@ -115,6 +116,18 @@ export const updateMovie = async (
     if (duration) movie.duration = duration;
     if (language) movie.language = language;
     if (releaseDate) movie.releaseDate = releaseDate;
+
+    if (file) {
+      if (movie.poster?.public_id) {
+        await removeFile(movie.poster.public_id);
+      }
+
+      const { path, public_id } = await upload(file, folder);
+      movie.poster = {
+        path,
+        public_id,
+      };
+    }
 
     await movie.save();
 
@@ -137,12 +150,19 @@ export const deleteMovie = async (
 ) => {
   try {
     const { id } = req.params;
+    const file = req.file;
 
-    const movie = await Movie.findByIdAndDelete(id);
+    const movie = await Movie.findOne({ _id: id });
 
     if (!movie) {
       throw new ApiError("movie not found with that id", 404);
     }
+
+    if (movie.poster?.public_id) {
+      await removeFile(movie.poster.public_id);
+    }
+
+    await movie.deleteOne();
 
     res.status(200).json({
       message: "movie deleted successfully",
