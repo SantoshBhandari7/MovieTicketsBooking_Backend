@@ -13,6 +13,13 @@ const ENV_CONFIG = {
 
   jwt_secrete: process.env.JWT_SECRETE!!,
   jwt_expiries_in: process.env.JWT_EXPIRIES_IN!!,
+
+  smtp_host: process.env.SMTP_HOST!!,
+  smtp_service: process.env.SMTP_SERVICE!!,
+  smtp_port: process.env.SMTP_PORT!!,
+  smtp_user: process.env.SMTP_USER!!,
+  smtp_pass: process.env.SMTP_PASS!!,
+  smtp_mail_from: process.env.SMTP_MAIL_FROM!!,
 };
 
 export default ENV_CONFIG;
