@@ -4,6 +4,8 @@ import { ApiError } from "../utils/apiError.utils";
 import { compare, hash } from "../utils/bcrypt.util";
 import { upload } from "../utils/cloudinary.utils";
 import ENV_CONFIG from "../config/Env.config";
+import { sendEmail } from "../utils/emailService.util";
+import { registerEmailTemplate } from "../utils/emailTemplate.util";
 
 const uploadFolders = "/profiles";
 
@@ -36,6 +38,15 @@ export const register = async (
     }
 
     await newUser.save();
+
+    sendEmail({
+      to: newUser.email,
+      subject: "Account Created",
+      html: registerEmailTemplate({
+        full_name: newUser.full_name,
+        email: newUser.email,
+      }),
+    });
 
     res.status(201).json({
       message: "User Register Successfully",
