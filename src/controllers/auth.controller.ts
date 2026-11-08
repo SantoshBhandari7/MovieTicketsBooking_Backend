@@ -5,7 +5,10 @@ import { compare, hash } from "../utils/bcrypt.util";
 import { upload } from "../utils/cloudinary.utils";
 import ENV_CONFIG from "../config/Env.config";
 import { sendEmail } from "../utils/emailService.util";
-import { registerEmailTemplate } from "../utils/emailTemplate.util";
+import {
+  loginEmailTemplate,
+  registerEmailTemplate,
+} from "../utils/emailTemplate.util";
 
 const uploadFolders = "/profiles";
 
@@ -45,6 +48,7 @@ export const register = async (
       html: registerEmailTemplate({
         full_name: newUser.full_name,
         email: newUser.email,
+        createdAt: newUser.createdAt,
       }),
     });
 
@@ -90,6 +94,17 @@ export const Login = async (
       throw new ApiError("Invalid Credential", 404);
       return;
     }
+
+    const loginDate = new Date();
+    sendEmail({
+      to: user.email,
+      subject: "Login Success",
+      html: loginEmailTemplate({
+        full_name: user.full_name,
+        email: user.email,
+        loginDate,
+      }),
+    });
 
     res.status(201).json({
       message: "Login successfully",
