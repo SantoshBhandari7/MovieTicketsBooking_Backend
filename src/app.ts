@@ -1,4 +1,5 @@
-import express, { NextFunction, Request, Response } from "express";
+import express, { Request, Response } from "express";
+import cookieParser from "cookie-parser";
 import { errorHandler } from "./middlewares/errorHandler.middleware";
 import AuthRoutes from "./routes/auth.routes";
 import MovieRoutes from "./routes/movie.routes";
@@ -10,6 +11,9 @@ import BookingRoutes from "./routes/booking.routes";
 import PaymentRoutes from "./routes/payment.routes";
 
 const app = express();
+// app.use();
+
+app.use(cookieParser());
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
@@ -31,7 +35,7 @@ app.use("/api/v1/bookings", BookingRoutes);
 app.use("/api/v1/payments", PaymentRoutes);
 
 app.use((req, res, next) => {
-  const error: any = Error(`Cannot on ${req.method} on ${req.path}`);
+  const error: any = new Error(`Cannot on ${req.method} on ${req.path}`);
   error.statusCode = 404;
   error.status = "fail";
   next(error);

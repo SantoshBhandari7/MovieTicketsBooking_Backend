@@ -9,6 +9,7 @@ import {
   loginEmailTemplate,
   registerEmailTemplate,
 } from "../utils/emailTemplate.util";
+import { generateJwtToken } from "../utils/jwt.utils";
 
 const uploadFolders = "/profiles";
 
@@ -95,6 +96,13 @@ export const Login = async (
       return;
     }
 
+    const access_token = generateJwtToken({
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+      full_name: user.full_name,
+    });
+
     const loginDate = new Date();
     sendEmail({
       to: user.email,
@@ -106,9 +114,19 @@ export const Login = async (
       }),
     });
 
+    res.cookie("access_token", access_token, {
+      httpOnly: ENV_CONFIG.node_env === "development" ? false : true,
+      maxAge: Number(ENV_CONFIG.cookie_expiry ?? "7") * 24 * 60 * 1000,
+      sameSite: ENV_CONFIG.node_env === "development" ? "lax" : "none",
+      secure: ENV_CONFIG.node_env === "development" ? false : true,
+    });
+
     res.status(201).json({
       message: "Login successfully",
-      data: user,
+      data: {
+        data: user,
+        access_token,
+      },
       status: "success",
       success: true,
     });
