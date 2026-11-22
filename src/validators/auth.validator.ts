@@ -28,3 +28,20 @@ export const userRegisterSchema = z.object({
   params: z.object({}).default({}),
   query: z.object({}).default({}),
 });
+
+export const loginSchema = z.object({
+  body: z.object({
+    email: z.string({
+      error: (issue) =>
+        issue.input === undefined
+          ? "email is required"
+          : "Invalid email format",
+    }),
+    password: z.string({
+      error: (issue) =>
+        issue.input === null
+          ? "password is required"
+          : "password must be string",
+    }),
+  }),
+});
