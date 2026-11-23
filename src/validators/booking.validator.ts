@@ -1,6 +1,7 @@
+import mongoose from "mongoose";
 import z, { input } from "zod";
 
-export const bookingSchema = z.object({
+export const createBookingSchema = z.object({
   body: z.object({
     user: z.string({
       error: (issue) =>
@@ -34,4 +35,50 @@ export const bookingSchema = z.object({
     })
     .min(0)
     .int("number should be positive"),
+});
+
+export const updateBookingSchema = z.object({
+  body: z.object({
+    bookingNumber: z.coerce
+      .number({
+        error: "bookingNumber is must be number",
+      })
+      .min(0),
+    user: z.string({
+      error: "user must be in number",
+    }),
+    seats: z.string({
+      error: "seats must be string",
+    }),
+    show: z.string({
+      error: "show must be string",
+    }),
+    totalAmount: z.coerce.number({
+      error: "amount must be number",
+    }),
+  }),
+});
+
+export const deleteBookingSchema = z.object({
+  params: z.object({
+    id: z
+      .string()
+      .refine((id) => mongoose.Types.ObjectId.isValid(id), "invalid id"),
+  }),
+});
+
+export const getByIdBookingSchema = z.object({
+  params: z.object({
+    id: z
+      .string()
+      .refine((id) => mongoose.Types.ObjectId.isValid(id), "invalid id"),
+  }),
+});
+
+export const BookingQuerySchema = z.object({
+  query: z.object({
+    query: z.string().optional(),
+    order: z.enum(["DESC", "ASC"]).default("DESC"),
+    sortBy: z.string().default("createdAt"),
+  }),
 });

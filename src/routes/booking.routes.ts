@@ -6,6 +6,8 @@ import {
   getBookingById,
   updateBooking,
 } from "../controllers/booking.controller";
+import { validate } from "../middlewares/validator.middleware";
+import { bookingSchema } from "../validators/booking.validator";
 
 const router = express.Router();
 
@@ -13,9 +15,9 @@ router.get("/", getAllBooking);
 
 router.get("/:id", getBookingById);
 
-router.post("/", createBooking);
+router.post("/", validate(bookingSchema), createBooking);
 
-router.put("/:id", updateBooking);
+router.put("/:id", validate(bookingSchema), updateBooking);
 
 router.delete("/:id", deleteBooking);
 
