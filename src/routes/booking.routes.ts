@@ -21,7 +21,7 @@ const router = express.Router();
 
 router.get(
   "/",
-  authenticate([Role.ADMIN || Role.SUPER_ADMIN]),
+  authenticate([Role.ADMIN, Role.SUPER_ADMIN]),
   validate(BookingQuerySchema),
   getAllBooking,
 );
