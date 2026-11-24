@@ -37,14 +37,14 @@ router.post("/", authenticate(), validate(createBookingSchema), createBooking);
 
 router.put(
   "/:id",
-  authenticate([Role.ADMIN || Role.SUPER_ADMIN]),
+  authenticate([Role.ADMIN, Role.SUPER_ADMIN]),
   validate(updateBookingSchema),
   updateBooking,
 );
 
 router.delete(
   "/:id",
-  authenticate([Role.ADMIN || Role.SUPER_ADMIN]),
+  authenticate([Role.ADMIN, Role.SUPER_ADMIN]),
   validate(deleteBookingSchema),
   deleteBooking,
 );
