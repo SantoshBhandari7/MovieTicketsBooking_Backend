@@ -1,5 +1,6 @@
 import z from "zod";
 import { Type } from "../@types/enum.types";
+import mongoose from "mongoose";
 
 export const createScreenSchema = z.object({
   body: z.object({
@@ -59,5 +60,29 @@ export const updateScreenSchema = z.object({
         }),
       ),
     }),
+  }),
+});
+
+export const deleteScreenSchema = z.object({
+  params: z.object({
+    id: z
+      .string()
+      .refine((id) => mongoose.Types.ObjectId.isValid(id), "Invalid id"),
+  }),
+});
+
+export const getCinemaByIdSchema = z.object({
+  params: z.object({
+    id: z
+      .string()
+      .refine((id) => mongoose.Types.ObjectId.isValid(id), "Invalid id"),
+  }),
+});
+
+export const ScreenQuery = z.object({
+  query: z.object({
+    query: z.string().optional(),
+    order: z.enum(["DESC", "ASC"]).default("DESC"),
+    sortBy: z.string().default("createdAt"),
   }),
 });
