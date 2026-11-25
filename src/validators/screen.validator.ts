@@ -71,7 +71,7 @@ export const deleteScreenSchema = z.object({
   }),
 });
 
-export const getCinemaByIdSchema = z.object({
+export const getScreenByIdSchema = z.object({
   params: z.object({
     id: z
       .string()

@@ -6,12 +6,14 @@ import {
   getScreenById,
   updateScreen,
 } from "../controllers/screen.controller";
+import { validate } from "../middlewares/validator.middleware";
+import { ScreenQuery } from "../validators/screen.validator";
 
 const router = express.Router();
 
-router.get("/", getAllScreen);
+router.get("/", validate(ScreenQuery), getAllScreen);
 
-router.get("/:id", getScreenById);
+router.get("/:id", validate(schema), getScreenById);
 
 router.post("/", createScreen);
 
