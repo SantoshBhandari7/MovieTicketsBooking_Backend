@@ -2,7 +2,7 @@ import z from "zod";
 import { Provider } from "../@types/enum.types";
 import mongoose, { mongo } from "mongoose";
 
-export const createPayment = z.object({
+export const createPaymentSchema = z.object({
   body: z.object({
     booking: z.string({
       error: (issue) =>
