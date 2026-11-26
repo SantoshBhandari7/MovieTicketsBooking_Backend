@@ -7,20 +7,41 @@ import {
   updatePayment,
 } from "../controllers/payment.controller";
 import { validate } from "../middlewares/validator.middleware";
-import { getByIdPaymentSchema, paymentQuery } from "../validators/payment.validator";
+import {
+  createPaymentSchema,
+  deletePaymentSchema,
+  getByIdPaymentSchema,
+  paymentQuery,
+  updatePaymentSchema,
+} from "../validators/payment.validator";
 import { authenticate } from "../middlewares/auth.middleware";
 import { Role } from "../@types/enum.types";
 
 const router = express.Router();
 
-router.get("/",validate(paymentQuery), getAllPayments);
+router.get("/", validate(paymentQuery), getAllPayments);
 
-router.get("/:id",validate(getByIdPaymentSchema), getPaymentsById);
+router.get("/:id", validate(getByIdPaymentSchema), getPaymentsById);
 
-router.post("/",authenticate([Role.SUPER_ADMIN,Role.ADMIN]),validate(cre) createPayment);
+router.post(
+  "/",
+  authenticate([Role.SUPER_ADMIN, Role.ADMIN]),
+  validate(createPaymentSchema),
+  createPayment,
+);
 
-router.put("/:id", updatePayment);
+router.put(
+  "/:id",
+  authenticate([Role.SUPER_ADMIN, Role.ADMIN]),
+  validate(updatePaymentSchema),
+  updatePayment,
+);
 
-router.delete("/:id", deletePayment);
+router.delete(
+  "/:id",
+  authenticate([Role.SUPER_ADMIN, Role.ADMIN]),
+  validate(deletePaymentSchema),
+  deletePayment,
+);
 
 export default router;
